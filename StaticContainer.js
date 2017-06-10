@@ -1,17 +1,19 @@
-const React = require('react');
-const ReactNative = require('react-native');
-const {Component, } = React;
-const {View, StyleSheet, } = ReactNative;
+var React = require('react');
 
-const StaticContainer = require('./StaticContainer');
+class StaticContainer extends React.Component {
 
-const SceneComponent = (Props) => {
-  const {shouldUpdated, ...props, } = Props;
-  return <View {...props}>
-      <StaticContainer shouldUpdate={shouldUpdated}>
-        {props.children}
-      </StaticContainer>
-  </View>;
-};
+  shouldComponentUpdate(nextProps: Object): boolean {
+    return !!nextProps.shouldUpdate;
+  }
 
-module.exports = SceneComponent;
+  render(): ?ReactElement {
+    var child = this.props.children;
+    if (child === null || child === false) {
+      return null;
+    }
+    return React.Children.only(child);
+  }
+
+}
+
+module.exports = StaticContainer;
